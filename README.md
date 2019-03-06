@@ -1,5 +1,5 @@
 # Concrete5 Packager
-![Concrete5 Packager](https://raw.githubusercontent.com/mnakalay/concrete5-packager/master/src/assets/concrete5-packager-logo-full.svg)
+![Concrete5 Packager](/concrete5-packager/src/assets/concrete5-packager-logo-full.svg?raw=true "Concrete5 Packager")
 ## Technical Description
 This app is built with:
 
