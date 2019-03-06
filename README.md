@@ -9,7 +9,10 @@ This app is built with:
 - Plenty of open source NodeJs projects (check package.json)
 
 ## How to run
-From the command line type
+From the command line first install all dependencies using NPM
+> npm install
+
+Then run the app from the command line by typing
 > quasar dev -m electron
 
 ## Usage
