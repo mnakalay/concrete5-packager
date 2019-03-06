@@ -8,6 +8,10 @@ This app is built with:
 - [VueJs](https://vuejs.org/ "VueJs")
 - Plenty of open source NodeJs projects (check package.json)
 
+## How to run
+From the command line type
+> quasar dev -m electron
+
 ## Usage
 
 **This Electron desktop app lets you zip Concrete5 packages.**
