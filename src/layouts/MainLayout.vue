@@ -22,8 +22,17 @@
           flat
           dense
           round
+          @click.native="openWorkFolder()"
+          aria-label="Click to open work folder"
+        >
+          <q-icon name="folder_open" />
+        </q-btn>
+        <q-btn
+          flat
+          dense
+          round
           @click="setShowSettings"
-          aria-label="Settings"
+          aria-label="Click to open settings screen"
         >
           <q-icon name="settings" />
         </q-btn>
@@ -79,8 +88,8 @@ import packageList from '../pages/package-list'
 import checkDirExists from '../util/check-dir-exists'
 import checkFileExists from '../util/check-file-exists'
 import settings from '../util/app-settings'
-// import settings2 from '../util/app-settings-store'
-import { ipcRenderer as ipc } from 'electron'
+import settingsStore from '../util/app-settings-store'
+import { shell, ipcRenderer as ipc } from 'electron'
 
 export default {
   name: 'MainLayout',
@@ -348,6 +357,13 @@ export default {
         })
       }
       this.roots = rootList
+    },
+    openWorkFolder () {
+      let defPath = remote.app.getPath('home').split(path.sep)
+      defPath.push('c5-packager')
+      defPath = defPath.join(path.sep)
+      let workFolder = settingsStore.getAppSettings('workFolder', defPath)
+      shell.openItem(workFolder)
     }
   },
   created () {

@@ -44,7 +44,7 @@ So far the app has the following settings:
 
 
 ## To do
-- Add a button to open the destination folder easily
+- ~~Add a button to open the destination folder easily~~
 - Add an option to exclude more files and folders
 - Add an option to exclude files and folders per package
 - Add an option to run Composer on the package
