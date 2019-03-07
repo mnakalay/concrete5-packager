@@ -129,7 +129,7 @@ async function copyToBuild() {
   try {
     let ignoreList = dataObj.finalIgnoreList
 
-    if (process.platform === 'win32') {
+    if (process.platform === 'win32' || process.platform === 'darwin') {
       ignoreList = ignoreList.map( item => item.replace(/\//g, '\\'))
     }
 
@@ -146,7 +146,7 @@ async function copyToBuild() {
 
     entries.total = filesToCopy.length
     fileChecker = filesToCopy
-
+    console.log(dataObj.buildFolder)
     await fs.emptyDir(dataObj.buildFolder)
     await fs.copy(dataObj.srcDir, dataObj.buildFolder, { filter: filterFunc })
   } catch (err) {
