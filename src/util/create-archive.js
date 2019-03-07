@@ -330,13 +330,6 @@ function formatBytes(bytes, decimals) {
 }
 
 const ignore = [
-    '*(**/)*.{sh,bash,bat,bin,exe,msi,sublime-project,sublime-workspace,code-workspace}',
-    '*(**/)*{Desktop.ini,thumbs.db,__macosx}',
-    '.git',
-    '.idea',
-    '.vscode',
-    '.php_cs.dist',
-    'DEV',
-    '.gitignore',
-    'exclusions.json'
+    '*(**/)*.{sh,bash,bat,bin,exe,msi,sublime-project,sublime-workspace,code-workspace}', // file extensions
+    '*(**/)*{Desktop.ini,thumbs.db,__macosx,DEV,.gitignore,.php_cs.dist,.vscode,.git,.idea,exclusions.json}' // files and directories
   ]
