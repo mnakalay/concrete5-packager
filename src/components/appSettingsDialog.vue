@@ -26,9 +26,9 @@
               <q-input
                 v-model.trim.lazy="selectedWorkFolder"
                 float-label="Build & release destination folder"
-                class="col-10"
+                class="col-11"
                 />
-              <div class="col-2 relative-position">
+              <div class="col-1 relative-position">
                 <q-btn
                   icon="folder_special"
                   color="green"
@@ -37,6 +37,38 @@
                   class="btn-work-root"
                 />
               </div>
+            </div>
+          </q-field>
+        </div>
+
+        <div class="col-12">
+          <q-field
+            helper="A coma separated list of file extensions you want excluded (no dots). Extensions already excluded are:
+            sh, bash, bat, bin, exe, msi, sublime-project, sublime-workspace, code-workspace"
+            :label-width="12"
+          >
+            <div class="row">
+              <q-input
+                v-model.trim.lazy="selectedExtensionExclusions"
+                float-label="File extensions to exclude"
+                class="col-12"
+                />
+            </div>
+          </q-field>
+        </div>
+
+        <div class="col-12">
+          <q-field
+            helper="A coma separated list of file & folders you want excluded. Files & folders already excluded are:
+            Desktop.ini, thumbs.db, __macosx, DEV, .gitignore, .php_cs.dist, .vscode, .git, .idea, exclusions.json"
+            :label-width="12"
+          >
+            <div class="row">
+              <q-input
+                v-model.trim.lazy="selectedFileFolderExclusions"
+                float-label="Files & folders to exclude"
+                class="col-12"
+                />
             </div>
           </q-field>
         </div>
@@ -94,6 +126,8 @@ export default {
     return {
       trigger: false,
       workFolder: '',
+      extensionExclusions: '',
+      fileFolderExclusions: '',
       deleteBuildFolder: 'yes',
       addC5Exec: 'yes',
       defPath: '',
@@ -125,6 +159,40 @@ export default {
           this.workFolder = this.defPath
         } else {
           this.workFolder = newValue
+        }
+      }
+    },
+    selectedExtensionExclusions: {
+      get: function () {
+        if (this.extensionExclusions && this.extensionExclusions.length > 0) {
+          return this.extensionExclusions
+        }
+
+        return ''
+      },
+      // setter
+      set: function (newValue) {
+        if (newValue.length <= 0 && this.extensionExclusions.length <= 0) {
+          this.extensionExclusions = ''
+        } else {
+          this.extensionExclusions = newValue
+        }
+      }
+    },
+    selectedFileFolderExclusions: {
+      get: function () {
+        if (this.fileFolderExclusions && this.fileFolderExclusions.length > 0) {
+          return this.fileFolderExclusions
+        }
+
+        return ''
+      },
+      // setter
+      set: function (newValue) {
+        if (newValue.length <= 0 && this.fileFolderExclusions.length <= 0) {
+          this.fileFolderExclusions = ''
+        } else {
+          this.fileFolderExclusions = newValue
         }
       }
     },
@@ -161,6 +229,18 @@ export default {
       } else {
         settingsStore.setAppSettings(this.workFolder, 'workFolder')
       }
+      if (!this.extensionExclusions || !this.extensionExclusions.length) {
+        settingsStore.clearAppSettings('extensionExclusions')
+        this.extensionExclusions = ''
+      } else {
+        settingsStore.setAppSettings(this.extensionExclusions, 'extensionExclusions')
+      }
+      if (!this.fileFolderExclusions || !this.fileFolderExclusions.length) {
+        settingsStore.clearAppSettings('fileFolderExclusions')
+        this.fileFolderExclusions = ''
+      } else {
+        settingsStore.setAppSettings(this.fileFolderExclusions, 'fileFolderExclusions')
+      }
       settingsStore.setAppSettings(this.deleteBuildFolder, 'deleteBuildFolder')
       settingsStore.setAppSettings(this.addC5Exec, 'addC5Exec')
     },
@@ -171,6 +251,8 @@ export default {
     // when we show it to the user
     onShow () {
       this.workFolder = settingsStore.getAppSettings('workFolder', this.defPath)
+      this.extensionExclusions = settingsStore.getAppSettings('extensionExclusions', '')
+      this.fileFolderExclusions = settingsStore.getAppSettings('fileFolderExclusions', '')
       this.deleteBuildFolder = settingsStore.getAppSettings('deleteBuildFolder', 'yes')
       this.addC5Exec = settingsStore.getAppSettings('addC5Exec', 'yes')
     },
@@ -183,6 +265,8 @@ export default {
     defPath.push('c5-packager')
     this.defPath = defPath.join(path.sep)
     this.workFolder = settingsStore.getAppSettings('workFolder', this.defPath)
+    this.extensionExclusions = settingsStore.getAppSettings('extensionExclusions', '')
+    this.fileFolderExclusions = settingsStore.getAppSettings('fileFolderExclusions', '')
     this.deleteBuildFolder = settingsStore.getAppSettings('deleteBuildFolder', 'yes')
     this.addC5Exec = settingsStore.getAppSettings('addC5Exec', 'yes')
 
@@ -206,6 +290,7 @@ export default {
 .btn-work-root {
   position: absolute;
   bottom: 0;
+  width: 100%;
 }
 .app-settings-dialog .modal-content {
   min-width: 550px

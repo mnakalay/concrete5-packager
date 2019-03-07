@@ -66,8 +66,6 @@ module.exports = function(ctx) {
                 'QInput',
                 'QCheckbox',
                 'QSearch',
-                'QTabs',
-                'QRouteTab'
             ],
             directives: [
                 'Ripple',

@@ -12,6 +12,8 @@ let dataObj = {
   srcDir: '',
   pkgHandle: '',
   workFolder: '',
+  extensionExclusions: '',
+  fileFolderExclusions: '',
   buildFolder: '',
   releaseFolder: '',
   releaseFile: '',
@@ -84,10 +86,20 @@ async function setDefaults(rootDir, pkgHandle) {
 
   dataObj.filesToClean = []
 
-  const customIgnore = settings.getAppSettings('ignore')
+  dataObj.extensionExclusions = settings.getAppSettings('extensionExclusions', '')
+  if (dataObj.extensionExclusions.length) {
+    dataObj.extensionExclusions = dataObj.extensionExclusions.split(',')
+    // removing all the extra spaces if any and concatenating
+    dataObj.extensionExclusions = '*(**/)*.{' + dataObj.extensionExclusions.map(str => str.trim()).join(',') + '}'
+    dataObj.finalIgnoreList.push(dataObj.extensionExclusions)
+  }
 
-  if (customIgnore) {
-    Array.prototype.push.apply(dataObj.finalIgnoreList, customIgnore);
+  dataObj.fileFolderExclusions = settings.getAppSettings('fileFolderExclusions', '')
+  if (dataObj.fileFolderExclusions.length) {
+    dataObj.fileFolderExclusions = dataObj.fileFolderExclusions.split(',')
+    // removing all the extra spaces if any and concatenating
+    dataObj.fileFolderExclusions = '*(**/)*{' + dataObj.fileFolderExclusions.map(str => str.trim()).join(',') + '}'
+    dataObj.finalIgnoreList.push(dataObj.fileFolderExclusions)
   }
 }
 
