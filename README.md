@@ -9,10 +9,13 @@ This app is built with:
 - Plenty of open source NodeJs projects (check package.json)
 
 ## How to run
-From the command line first install all dependencies using NPM
+First intall the Quasar Framework from the command line (this installs it globally)
+> npm install -g quasar-cli
+
+Then install all dependencies using NPM from within the project folder
 > npm install
 
-Then run the app from the command line by typing
+Finally run the app with the following command
 > quasar dev -m electron
 
 ## Usage
