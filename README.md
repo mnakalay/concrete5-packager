@@ -8,6 +8,8 @@ This app is built with:
 - [VueJs](https://vuejs.org/ "VueJs")
 - Plenty of open source NodeJs projects (check package.json)
 
+Tested on Windows and Mac (thank you Ryan @mesuva)
+
 ## How to run
 First intall the Quasar Framework from the command line (this installs it globally)
 > npm install -g quasar-cli
@@ -17,6 +19,9 @@ Then install all dependencies using NPM from within the project folder
 
 Finally run the app with the following command
 > quasar dev -m electron
+
+On Mac you might get an error message saying you also need to run the following command
+> npm install --save aws-sdk
 
 ## Usage
 
