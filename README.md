@@ -51,5 +51,5 @@ So far the app has the following settings:
 - ~~Add an option to exclude more files and folders~~
 - Add an option to exclude files and folders per package
 - Add an option to run Composer on the package
-- Add an opion to only check the package (not zip) and give a detailed report
+- Add an option to only check the package (not zip) and give a detailed report
 - Add the possibility to upload it directly to the marketplace

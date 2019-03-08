@@ -20,7 +20,7 @@
           <q-btn dense flat round icon="more_vert" size="md">
             <q-popover>
               <q-list link>
-                <q-item v-close-overlay @click.native="compress(pkg)">
+                <q-item v-close-overlay @click.native="compress(pkg.handle)">
                   <q-item-side left style="min-width: auto;">
                     <q-icon name="archive" size="20px" />
                   </q-item-side>
@@ -28,11 +28,13 @@
                     Zip “{{ controller.name }}”
                   </q-item-main>
                 </q-item>
-                <q-item v-close-overlay>
+                <q-item v-close-overlay @click.native="openPkgDir(pkg.nodeKey)">
                   <q-item-side left style="min-width: auto;">
-                    <q-icon name="layers_clear" size="20px" />
+                    <q-icon name="folder_open" size="20px" />
                   </q-item-side>
-                  <q-item-main label="Exclude files from Zip" />
+                  <q-item-main>
+                    Open “{{ controller.name }}” folder
+                  </q-item-main>
                 </q-item>
               </q-list>
             </q-popover>
@@ -49,7 +51,7 @@ const path = require('path')
 const chokidar = require('chokidar')
 // const archiver = require('archiver')
 import gridItemImage from '../components/gridItemImage'
-import { ipcRenderer as ipc } from 'electron'
+import { shell, ipcRenderer as ipc } from 'electron'
 
 export default {
   name: 'GridItem',
@@ -179,8 +181,8 @@ export default {
         }
       }
     },
-    compress: async function (pkg) {
-      let pkgHandle = pkg.handle
+    compress: async function (pkgHandle) {
+      // let pkgHandle = pkg.handle
       let url = 'http://localhost:8000/pkg/' + pkgHandle
       let that = this
       ipc.once('zipped', function (event, data) {
@@ -248,6 +250,9 @@ export default {
       //   })
       // }
       return true
+    },
+    openPkgDir (path) {
+      shell.openItem(path)
     }
   },
   beforeDestroy: function () {

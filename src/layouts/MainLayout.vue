@@ -23,9 +23,12 @@
           dense
           round
           @click.native="openWorkFolder()"
-          aria-label="Click to open work folder"
+          aria-label="Click to open build & release folder"
         >
           <q-icon name="folder_open" />
+          <q-tooltip self="bottom right">
+            Open the Build & Release folder
+          </q-tooltip>
         </q-btn>
         <q-btn
           flat
@@ -35,6 +38,9 @@
           aria-label="Click to open settings screen"
         >
           <q-icon name="settings" />
+          <q-tooltip>
+            Settings
+          </q-tooltip>
         </q-btn>
       </q-toolbar>
     </q-layout-header>
