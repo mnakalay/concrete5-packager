@@ -1,20 +1,8 @@
 <template>
 <div class="root-list-wrapper">
-  <!-- <q-item link>
-    <q-item-main @click.native="openURL('http://quasar-framework.org')" label="Docs" sublabel="quasar-framework.org" />
-    <q-item-side right>
-      <q-btn flat round dense icon="more_vert">
-        <q-popover>
-          <q-list link>
-            <q-item v-close-overlay>
-              <q-item-side left icon="delete_forever" color="negative" size="1.25rem" />
-              <q-item-main label="Delete" />
-            </q-item>
-          </q-list>
-        </q-popover>
-      </q-btn>
-    </q-item-side>
-  </q-item> -->
+      <q-list
+        separator
+      >
   <Root
     @click.native="setActive(root.id, $event)"
     v-on:remove-root="removeRoot"
@@ -24,12 +12,15 @@
     :class="{ 'text-cyan-10 bg-light-blue-3 root-active': isActive(root.id) }"
   >
   </Root>
-</div>
+      </q-list>
+      </div>
+<!-- </div> -->
 </template>
 
 <script>
 import Root from './root'
-import settings from '../util/app-settings-store'
+// import settings from '../util/app-settings-store'
+import settings from '../util/app-settings'
 
 export default {
   name: 'rootList',
@@ -70,13 +61,15 @@ export default {
         message: 'Please confirm you want to remove Concrete5 root “' + root.label + '”',
         ok: 'Yes, remove!',
         cancel: 'No'
-      }).then(() => {
+      }).onOk(() => {
         // let gRootList = JSON.parse(settings.getAppSettings('rootList')) || []
-        let gRootList = settings.getAppSettings('rootList', [])
+        console.log('removing')
+        // let gRootList = settings.getAppSettings('rootList', [])
+        let gRootList = JSON.parse(settings.getAppSettings('rootList')) || []
         const rootID = root.id
         gRootList.splice(rootID, 1)
-        // settings.setAppSettings(JSON.stringify(gRootList), 'rootList')
-        settings.setAppSettings(gRootList, 'rootList')
+        settings.setAppSettings(JSON.stringify(gRootList), 'rootList')
+        // settings.setAppSettings(gRootList, 'rootList')
 
         const rootIndex = this.roots.indexOf(root)
         this.roots.splice(rootIndex, 1)
@@ -89,8 +82,10 @@ export default {
           position: 'top-right',
           timeout: 1500
         })
-      }).catch(() => {
+      }).onCancel(() => {
         console.log('removal cancelled')
+      }).onDismiss(() => {
+        console.log('modal dismissed')
       })
     }
   }

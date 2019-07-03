@@ -1,28 +1,36 @@
 <template>
-  <q-item link separator position-relative class="root-wrapper" @click.native="displayPackages(root.path, $event)" >
-    <q-item-side inverted class="root-actions">
-      <q-btn dense round icon="clear" color="negative" size="sm" @click.native="removeRoot(root)" style="margin-right: 5px;" class="btn-remove-root">
-        <q-tooltip>
-          Remove “{{ root.label }}” from list
-        </q-tooltip>
-      </q-btn>
-      <q-btn dense round icon="folder_open" color="positive" size="sm" @click.native="openRootDir(root.path)" class="btn-open-dir">
-        <q-tooltip>
-          Open installation folder
-        </q-tooltip>
-      </q-btn>
-      <q-btn dense round icon="view_list" color="info" size="sm" style="margin-right: 5px; margin-left: 5px;">
-        <q-tooltip>
-          Display packages
-        </q-tooltip>
-      </q-btn>
-    </q-item-side>
-    <q-item-main class="root-detail" sublabel-lines=1 :label="root.label" :sublabel="root.path">
+  <q-item clickable v-ripple class="root-wrapper" @click.native="displayPackages(root.path, $event)" >
+    <q-item-section inverted class="root-actions">
+      <div>
+        <q-btn dense round icon="clear" color="negative" size="sm" @click.native="removeRoot(root)" style="margin-right: 5px;" class="btn-remove-root">
+          <q-tooltip>
+            Remove “{{ root.label }}” from list
+          </q-tooltip>
+        </q-btn>
+        <q-btn dense round icon="folder_open" color="positive" size="sm" @click.native="openRootDir(root.path)" class="btn-open-dir">
+          <q-tooltip>
+            Open installation folder
+          </q-tooltip>
+        </q-btn>
+        <q-btn dense round icon="view_list" color="info" size="sm" style="margin-right: 5px; margin-left: 5px;">
+          <q-tooltip>
+            Display packages
+          </q-tooltip>
+        </q-btn>
+      </div>
+    </q-item-section>
+    <q-item-section class="root-detail">
+      <q-item-label overline>
+        {{ root.label }}
+      </q-item-label>
+      <q-item-label caption lines="1">
+        {{ root.path }}
+      </q-item-label>
+      <q-icon name="chevron_right" size="1.8rem" class="check" />
       <q-tooltip>
         Click to display packages
       </q-tooltip>
-    </q-item-main>
-    <q-icon name="chevron_right" size="1.8rem" class="check" />
+    </q-item-section>
   </q-item>
 </template>
 
@@ -76,7 +84,7 @@ export default {
 
 .root-wrapper .root-actions {
     padding-right: 5px;
-    margin-left: -110px;
+    margin-left: -100%; /* -110px; */
     transition: all 0.3s;
     transform: rotate(75deg);
 }

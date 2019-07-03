@@ -1,23 +1,19 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-layout-header>
-      <q-toolbar
-        color="light-blue"
-      >
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-
+  <!-- <q-layout view="hHh lpR fFf"> -->
+    <q-layout view="lHh Lpr lFf">
+    <q-header elevated class="bg-primary text-white">
+      <q-toolbar>
+        <q-btn dense flat round icon="menu" @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" />
         <q-toolbar-title>
           Concrete5 Packager
           <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
         </q-toolbar-title>
+        <!-- <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+          </q-avatar>
+          Title
+        </q-toolbar-title> -->
         <q-btn
           flat
           dense
@@ -43,32 +39,50 @@
           </q-tooltip>
         </q-btn>
       </q-toolbar>
-    </q-layout-header>
+    </q-header>
 
-    <q-layout-drawer
+    <!-- <q-drawer v-model="left" side="left" bordered>
+    </q-drawer> -->
+    <q-drawer
       v-model="leftDrawerOpen"
+      side="left"
       :content-class="'bg-grey-2'"
+      bordered
     >
 
-      <q-list
+      <!-- <q-list
         no-border
         inset-delimiter
-      >
-      <div class="row justify-center">
-        <q-btn
-          icon="library_add"
-          label="Add a Concrete5 root"
-          color="green"
-          @click="triggerSelectRoot"
-          aria-label="Add a Concrete5 root"
-        />
-      </div>
+      > -->
 
-        <q-list-header>Concrete5 Root Folders</q-list-header>
-        <root-list v-bind:roots="roots"></root-list>
+      <q-list>
+        <q-item>
+          <q-item-section>
+            <div class="row justify-center items-center">
+              <q-btn
+                icon="library_add"
+                label="Add a Concrete5 root"
+                color="green"
+                @click="triggerSelectRoot"
+                aria-label="Add a Concrete5 root"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
       </q-list>
-    </q-layout-drawer>
+      <!-- <div class="root-list-wrapper">
+      <q-list
+        separator
+      > -->
+        <!-- <q-item-label header>Concrete5 Root Folders</q-item-label> -->
+        <root-list v-bind:roots="roots"></root-list>
+      <!-- </q-list>
+      </div> -->
+    </q-drawer>
 
+    <!-- <q-page-container>
+      <router-view />
+    </q-page-container> -->
     <q-page-container>
       <package-list
         :packages="packages"
@@ -108,6 +122,7 @@ export default {
   data () {
     return {
       leftDrawerOpen: true,
+      // left: true,
       showSettings: false,
       roots: [],
       packages: [],
@@ -170,11 +185,11 @@ export default {
         message: 'Some packages were added or removed. Do you want to refresh the list?',
         ok: 'Yes please!',
         cancel: 'No'
-      }).then(() => {
+      }).onOk(() => {
         that.clearAllPackages()
         that.packages.push(...that.getRootPackages(that.selectedRoot))
         that.refreshDialogVisible = false
-      }).catch(() => {
+      }).onCancel(() => {
         console.log('refresh cancelled')
         that.refreshDialogVisible = false
       })
@@ -383,7 +398,7 @@ export default {
     this.buildRootList(true)
   },
   beforeDestroy: function () {
-    this.$root.$off('root-removed', this.setSelectedRoot)
+    this.$root.$off('root-removed', this.shouldClear)
     this.$root.$off('display-pkg', this.setSelectedRoot)
     this.$root.$off('rescan-current-root', this.rescanCurrentRoot)
     this.watcher.close()

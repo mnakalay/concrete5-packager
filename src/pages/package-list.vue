@@ -7,19 +7,22 @@
     />
     <div class="packages-container">
       <div class="search row">
-        <q-search
-          v-model="searchText"
+        <q-input
+          v-model="getSearchText"
+          debounce="500"
           clearable
-          @clear="resetSearch"
-          icon="search"
-          float-label="Search packages by name or handle"
-          color="white"
-          inverted-light
+          label="Search packages by name or handle"
+          filled
+          color="light-blue-6"
           class="search-input col-12"
-        />
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </div>
-      <div class="packages-wrapper overflow-hidden">
-        <div class="row justify-center gutter-sm">
+      <div class="packages-wrapper overflow-hidden q-pa-md col">
+        <div class="row justify-center q-col-gutter-sm">
           <div v-for="pkg in packages" :key="pkg.nodeKey" class="pkg-item col-xs-12 col-sm-6 col-lg-6 col-xl-4">
             <gridItem
               @zip-progress-change="setProgress"
@@ -72,6 +75,20 @@ export default {
   },
 
   watch: {
+  },
+  computed: {
+    getSearchText: {
+      get: function () {
+        return this.searchText
+      },
+      // setter
+      set: function (newValue) {
+        this.searchText = newValue
+        if (!newValue) {
+          this.resetSearch()
+        }
+      }
+    }
   },
   methods: {
     setProgress: function (data) {
@@ -130,7 +147,7 @@ export default {
   position: relative;
   width: 100%;
   /* height: calc(100vh - 50px); */
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 .packages-container {
@@ -147,5 +164,9 @@ export default {
 }
 .packages-container .hidden {
   display: none;
+}
+.radial-progress-container {
+  overflow: hidden!important;
+  box-shadow: none!important;
 }
 </style>

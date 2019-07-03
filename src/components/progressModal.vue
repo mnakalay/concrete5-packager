@@ -1,15 +1,16 @@
 <template>
-  <q-modal
+  <q-dialog
     v-model="trigger"
     key="progressModal"
+    persistent
     :maximized="true"
     :no-route-dismiss="true"
     :no-esc-dismiss="true"
     :no-backdrop-dismiss="true"
-    :content-classes="modalContentClasses"
+    :content-class="modalContentClasses"
   >
     <h4 v-if="progressData.heading">{{ progressData.heading }}</h4>
-    <radial-progress-bar
+      <radial-progress-bar
       :diameter="300"
       :strokeWidth="20"
       :startColor="startColor"
@@ -19,9 +20,9 @@
       :total-steps="progressData.total"
       :class="progressClasses"
       >
-      <h3>{{ progress }}%</h3>
-    </radial-progress-bar>
-  </q-modal>
+        <h3>{{ progress }}%</h3>
+      </radial-progress-bar>
+  </q-dialog>
 </template>
 
 <script>
@@ -58,7 +59,7 @@ export default {
   },
   data () {
     return {
-      modalContentClasses: 'progress-modal',
+      modalContentClasses: 'progress-modal flex column',
       progressClasses: 'progress-bar',
       startColor: '#ffeb3b',
       stopColor: '#8bc34a'
@@ -72,10 +73,14 @@ export default {
   color: #fff;
   text-align: center;
 }
-.progress-modal .progress-bar {
+.progress-modal .progress-bar,
+.progress-modal h4 {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.progress-modal h4 {
+  transform: translate(-50%, -250px);
 }
 </style>

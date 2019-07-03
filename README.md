@@ -39,7 +39,7 @@ When you select a package to zip, it is automatically copied to the destination 
 
 Some common files and folders are automatically ignored like .git, hidden files... And you can set your own exclusions.
 
-The app checks the package for missing `defined('C5_EXECUTE') or die("Access Denied.")` and adds the missing ones. Any "vendor" forlder in the package is automatically ignored for that step.
+The app checks the package for missing `defined('C5_EXECUTE') or die("Access Denied.")` and adds the missing ones. Any "vendor" folder in the package is automatically ignored for that step.
 
 It then zips the package and puts it in a "release" folder inside the destination folder. The copy in the "build" folder is deleted.
 
@@ -58,4 +58,4 @@ So far the app has the following settings:
 - Add an option to exclude files and folders per package (maybe)
 - Add an option to run Composer on the package
 - Add an option to only check the package (not zip) and give a detailed report
-- Add the possibility to upload it directly to the marketplace
+- Add the possibility to upload it directly to the marketplace (possibly hacky)

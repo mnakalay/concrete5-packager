@@ -6,40 +6,50 @@
   >
     <q-card flat class="pkg-card-wrapper bg-white overflow-hidden">
       <q-item class="pkg-card">
-        <q-item-side>
+        <q-item-section avatar>
           <gridItemImage
             :pkg="pkg"
             :width="width"
           />
-        </q-item-side>
-        <q-item-main class="pkg-label">
-          <q-item-tile label>{{ controller.name }} <em class="ver-num text-light-blue">{{ controller.versionNumber }}</em></q-item-tile>
-          <q-item-tile sublabel>{{ pkg.handle }}</q-item-tile>
-        </q-item-main>
-        <q-item-side right inverted>
+        </q-item-section>
+
+        <q-item-section class="pkg-label">
+          <q-item-label overline>{{ controller.name }} <em class="ver-num text-light-blue">{{ controller.versionNumber }}</em></q-item-label>
+          <q-item-label caption>{{ pkg.handle }}</q-item-label>
+        </q-item-section>
+
+        <!-- <q-item-label class="pkg-label">
+          <q-item-section label>{{ controller.name }} <em class="ver-num text-light-blue">{{ controller.versionNumber }}</em></q-item-section>
+          <q-item-section sublabel>{{ pkg.handle }}</q-item-section>
+        </q-item-label> -->
+        <q-item-section side>
           <q-btn dense flat round icon="more_vert" size="md">
-            <q-popover>
+            <q-menu>
               <q-list link>
-                <q-item v-close-overlay @click.native="compress(pkg.handle)">
-                  <q-item-side left style="min-width: auto;">
+                <q-item clickable v-ripple v-close-popup @click.native="compress(pkg.handle)">
+                  <q-item-section avatar style="min-width: auto;">
                     <q-icon name="archive" size="20px" />
-                  </q-item-side>
-                  <q-item-main>
-                    Zip “{{ controller.name }}”
-                  </q-item-main>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      Zip “{{ controller.name }}”
+                    </q-item-label>
+                  </q-item-section>
                 </q-item>
-                <q-item v-close-overlay @click.native="openPkgDir(pkg.nodeKey)">
-                  <q-item-side left style="min-width: auto;">
+                <q-item clickable v-ripple v-close-popup @click.native="openPkgDir(pkg.nodeKey)">
+                  <q-item-section avatar style="min-width: auto;">
                     <q-icon name="folder_open" size="20px" />
-                  </q-item-side>
-                  <q-item-main>
-                    Open “{{ controller.name }}” folder
-                  </q-item-main>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      Open “{{ controller.name }}” folder
+                    </q-item-label>
+                  </q-item-section>
                 </q-item>
               </q-list>
-            </q-popover>
+            </q-menu>
           </q-btn>
-        </q-item-side>
+        </q-item-section>
       </q-item>
     </q-card>
   </transition>

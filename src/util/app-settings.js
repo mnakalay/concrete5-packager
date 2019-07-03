@@ -2,14 +2,14 @@ import { LocalStorage } from 'quasar'
 
 function getAppSettings (key = null) {
   if (!key) {
-    if (LocalStorage.get.length() > 0) {
-      return LocalStorage.get.all()
+    if (LocalStorage.getLength() > 0) {
+      return LocalStorage.getAll()
     } else {
       return false
     }
   }
 
-  let ret = LocalStorage.get.item(key)
+  let ret = LocalStorage.getItem(key)
 
   return ret || false
 }
@@ -21,7 +21,7 @@ function setAppSettings (value, key = null) {
 
   LocalStorage.set(key, value)
 
-  return LocalStorage.get.length()
+  return LocalStorage.getLength()
 }
 
 function clearAppSettings (key = null) {

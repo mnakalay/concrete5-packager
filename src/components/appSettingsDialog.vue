@@ -1,111 +1,130 @@
 <template>
   <q-dialog
     v-model="shouldTrigger"
-    key="appSettingsDialog"
-    ok="SAVE"
-    cancel="CANCEL"
-    @ok="onOk"
-    @cancel="onCancel"
     @show="onShow"
     @hide="onHide"
     class="app-settings-dialog"
   >
-    <span slot="title">Packager Settings</span>
-    <div slot="body">
-      <div class="row">
-        <div class="col-12">
-          <q-field
-            helper="Where we'll build the package and save the release zip file."
-            :error="workFolderHasError"
-            error-label="We need an existing and valid folder"
-            :warning="workFolderHasWarning"
-            warning-label="If left empty it will revert back to default"
-            :label-width="12"
-          >
-            <div class="row gutter-xs">
-              <q-input
-                v-model.trim.lazy="selectedWorkFolder"
-                float-label="Build & release destination folder"
-                class="col-11"
-                />
-              <div class="col-1 relative-position">
-                <q-btn
-                  icon="folder_special"
-                  color="green"
-                  @click="triggerSelectWorkFolder"
-                  aria-label="Select your build & release destination folder"
-                  class="btn-work-root"
-                />
-              </div>
+    <q-card class="q-px-sm q-pb-md">
+        <q-card-section>
+          <div class="text-h5">Packager Settings</div>
+        </q-card-section>
+        <q-card-section>
+          <div class="row">
+            <div class="col-12 q-mb-lg">
+              <!-- <q-field
+                helper="Where we'll build the package and save the release zip file."
+                :error="workFolderHasError"
+                error-label="We need an existing and valid folder"
+                :warning="workFolderHasWarning"
+                warning-label="If left empty it will revert back to default"
+                :label-width="12"
+              > -->
+                <div class="row">
+                  <div class="col-11">
+                    <q-input
+                      v-model.trim.lazy="selectedWorkFolder"
+                      label="Build & release destination folder"
+                      hint="Where we'll build the package and save the release zip file."
+                      bottom-slots
+                      />
+                  </div>
+                  <div class="col-1 relative-position">
+                    <q-btn
+                      icon="folder_special"
+                      color="green"
+                      @click="triggerSelectWorkFolder"
+                      aria-label="Select your build & release destination folder"
+                      class="btn-work-root"
+                    />
+                  </div>
+                </div>
+              <!-- </q-field> -->
             </div>
-          </q-field>
-        </div>
 
-        <div class="col-12">
-          <q-field
-            helper="A coma separated list of file extensions you want excluded (no dots). Extensions already excluded are:
-            sh, bash, bat, bin, exe, msi, sublime-project, sublime-workspace, code-workspace"
-            :label-width="12"
-          >
-            <div class="row">
-              <q-input
-                v-model.trim.lazy="selectedExtensionExclusions"
-                float-label="File extensions to exclude"
-                class="col-12"
-                />
-            </div>
-          </q-field>
-        </div>
+            <div class="col-12 q-mb-lg">
+              <!-- <q-field
+                helper="A coma separated list of file extensions you want excluded (no dots). Extensions already excluded are:
+                sh, bash, bat, bin, exe, msi, sublime-project, sublime-workspace, code-workspace"
+                :label-width="12"
+              > -->
+                <!-- <div class="row">
+                  <div class="col-12"> -->
+                    <q-input
+                      v-model.trim.lazy="selectedExtensionExclusions"
+                      label="File extensions to exclude"
+                      hint="A coma separated list of file extensions you want excluded (no dots). Extensions already excluded are: sh, bash, bat, bin, exe, msi, sublime-project, sublime-workspace, code-workspace"
+                      bottom-slots
+                      />
+                    <!-- </div> -->
+                <!-- </div> -->
 
-        <div class="col-12">
-          <q-field
-            helper="A coma separated list of file & folders you want excluded. Files & folders already excluded are:
-            Desktop.ini, thumbs.db, __macosx, DEV, .gitignore, .php_cs.dist, .vscode, .git, .idea, exclusions.json"
-            :label-width="12"
-          >
-            <div class="row">
-              <q-input
-                v-model.trim.lazy="selectedFileFolderExclusions"
-                float-label="Files & folders to exclude"
-                class="col-12"
-                />
+              <!-- </q-field> -->
             </div>
-          </q-field>
-        </div>
 
-        <div class="col-12">
-          <q-field
-            :label-width="12"
-            class="q-mt-lg"
-          >
-            <div class="row">
-              <q-checkbox
-                v-model="selectDeleteBuildFolder"
-                label="Delete the build folder after zipping up the package"
-                true-value="yes"
-                false-value="no"
-                />
-            </div>
-          </q-field>
-        </div>
+            <!-- <div class="col-12"> -->
+              <!-- <q-field
+                helper="A coma separated list of file & folders you want excluded. Files & folders already excluded are:
+                Desktop.ini, thumbs.db, __macosx, DEV, .gitignore, .php_cs.dist, .vscode, .git, .idea, exclusions.json"
+                :label-width="12"
+              > -->
+                <!-- <div class="row"> -->
+                <div class="col-12 q-mb-lg">
+                  <q-input
+                    v-model.trim.lazy="selectedFileFolderExclusions"
+                    label="Files & folders to exclude"
+                    hint="A coma separated list of file & folders you want excluded. Files & folders already excluded are:
+                Desktop.ini, thumbs.db, __macosx, DEV, .gitignore, .php_cs.dist, .vscode, .git, .idea, exclusions.json"
+                    bottom-slots
+                    />
+                </div>
+                <!-- </div> -->
+              <!-- </q-field> -->
+            <!-- </div> -->
 
-        <div class="col-12">
-          <q-field
-            :label-width="12"
-            class="q-mt-lg"
-          >
-            <div class="row">
-              <q-checkbox
-                v-model="selectAddC5Exec"
-                label="Add missing C5_EXECUTE to every PHP file"
-                true-value="yes"
-                false-value="no"
-                />
-            </div>
-          </q-field>
-        </div>
-      </div>
-    </div>
+            <!-- <div class="col-12"> -->
+              <!-- <q-field
+                :label-width="12"
+                class="q-mt-lg"
+              > -->
+              <!-- <div class="q-mt-lg"> -->
+                <div class="col-12 q-mb-lg">
+                  <q-checkbox
+                    v-model="selectDeleteBuildFolder"
+                    label="Delete the build folder after zipping up the package"
+                    true-value="yes"
+                    false-value="no"
+                    />
+                </div>
+              <!-- </div> -->
+
+              <!-- </q-field> -->
+            <!-- </div> -->
+
+            <!-- <div class="col-12"> -->
+              <!-- <q-field
+                :label-width="12"
+                class="q-mt-lg"
+              > -->
+              <!-- <div class="q-mt-lg"> -->
+                <div class="col-12 q-mb-lg">
+                  <q-checkbox
+                    v-model="selectAddC5Exec"
+                    label="Add missing C5_EXECUTE to every PHP file"
+                    true-value="yes"
+                    false-value="no"
+                    />
+                </div>
+              <!-- </div> -->
+              <!-- </q-field> -->
+            <!-- </div> -->
+          </div>
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="CANCEL" v-close-popup />
+          <q-btn flat label="SAVE" v-close-popup @click.native="onOk()" />
+        </q-card-actions>
+      </q-card>
   </q-dialog>
 
 </template>
@@ -130,9 +149,7 @@ export default {
       fileFolderExclusions: '',
       deleteBuildFolder: 'yes',
       addC5Exec: 'yes',
-      defPath: '',
-      workFolderHasError: false,
-      workFolderHasWarning: false
+      defPath: ''
     }
   },
   computed: {
@@ -243,6 +260,13 @@ export default {
       }
       settingsStore.setAppSettings(this.deleteBuildFolder, 'deleteBuildFolder')
       settingsStore.setAppSettings(this.addC5Exec, 'addC5Exec')
+      this.$q.notify({
+        message: 'Your settings were successfully saved',
+        color: 'green',
+        icon: 'thumb_up',
+        position: 'top-right',
+        timeout: 1500
+      })
     },
 
     // when props.cancel() gets called
@@ -289,7 +313,7 @@ export default {
 <style>
 .btn-work-root {
   position: absolute;
-  bottom: 0;
+  top: 15px;
   width: 100%;
 }
 .app-settings-dialog .modal-content {

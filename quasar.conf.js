@@ -3,7 +3,7 @@
 module.exports = function(ctx) {
     return {
         // app plugins (/src/plugins)
-        plugins: [
+        boot: [
             'i18n',
             'axios'
         ],
@@ -11,11 +11,11 @@ module.exports = function(ctx) {
             'app.styl'
         ],
         extras: [
-            ctx.theme.mat ? 'roboto-font' : null,
+            'roboto-font',
             'material-icons' // optional, you are not bound to it
-            // 'ionicons',
-            // 'mdi',
-            // 'fontawesome'
+            // 'ionicons-v4',
+            // 'mdi-v3',
+            // 'fontawesome-v5'
         ],
         supportIE: false,
         build: {
@@ -43,8 +43,8 @@ module.exports = function(ctx) {
         framework: {
             components: [
                 'QLayout',
-                'QLayoutHeader',
-                'QLayoutDrawer',
+                'QHeader',
+                'QDrawer',
                 'QPageContainer',
                 'QPage',
                 'QToolbar',
@@ -52,24 +52,29 @@ module.exports = function(ctx) {
                 'QBtn',
                 'QIcon',
                 'QList',
-                'QListHeader',
+                // 'QListHeader',
+                'QItemLabel',
                 'QItem',
-                'QItemMain',
-                'QItemSide',
-                'QItemTile',
+                // 'QItemMain', replaced by QItemLabel
+                // 'QItemSide', replaced by QItemSection
+                'QItemSection',
+                // 'QItemTile', replaced by QItemSection
                 'QCard',
-                'QPopover',
+                'QCardSection',
+                'QCardActions',
+                // 'QPopover', replaced by QMenu
+                'QMenu',
                 'QTooltip',
-                'QModal',
+                // 'QModal',
                 'QDialog',
                 'QField',
                 'QInput',
                 'QCheckbox',
-                'QSearch',
+                // 'QSearch', replaced by QInput
             ],
             directives: [
                 'Ripple',
-                'CloseOverlay'
+                'ClosePopup'
             ],
             // Quasar plugins
             plugins: [
@@ -77,9 +82,9 @@ module.exports = function(ctx) {
                 'Dialog',
                 'LocalStorage'
             ],
-            config: {}
-            // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-            // i18n: 'de' // Quasar language
+            config: {},
+            iconSet: 'material-icons',
+            // lang: 'en' // Quasar language
         },
         // animations: 'all' --- includes all animations
         animations: [

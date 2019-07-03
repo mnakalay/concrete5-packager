@@ -1,14 +1,15 @@
 <template>
-  <q-modal
+  <q-dialog
     v-model="trigger"
     key="compressModal"
     :maximized="true"
+    persistent
     :no-route-dismiss="false"
     :no-esc-dismiss="false"
     :no-backdrop-dismiss="true"
     :content-classes="modalContentClasses"
   >
-  </q-modal>
+  </q-dialog>
 </template>
 
 <script>
