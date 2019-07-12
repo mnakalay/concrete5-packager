@@ -1,6 +1,6 @@
 {
     "name": "concrete5-packager",
-    "version": "1.2",
+    "version": "1.2.0",
     "description": "Clean & zip up Concrete5 Packages ready for production.",
     "productName": "Concrete5 Packager",
     "cordovaId": "org.cordova.quasar.app",
