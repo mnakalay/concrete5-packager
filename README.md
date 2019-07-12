@@ -59,8 +59,8 @@ So far the app has the following settings:
 - ~~Add a button to open the destination folder easily~~
 - ~~Add an option to exclude more files and folders~~
 - ~~Add an option to exclude files and folders per package~~
+- ~~Add proper (sort of) icons for the app~~
 - Add an option to run Composer on the package
 - Add an option to only check the package (no zipping) and give a detailed report
 - Add the possibility to push the release to a GIT repository
 - Add the possibility to upload it directly to the marketplace (possibly hacky)
-- Add proper icons for the app
