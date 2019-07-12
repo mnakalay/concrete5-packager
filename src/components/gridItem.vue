@@ -5,6 +5,9 @@
     leave-active-class="animated fadeOut"
   >
     <q-card flat class="pkg-card-wrapper bg-white overflow-hidden">
+      <div class="has-custom-exclusions bg-amber-6 text-white" v-if="hasCustomExclusions">
+        has exclusions
+      </div>
       <q-item class="pkg-card">
         <q-item-section avatar>
           <gridItemImage
@@ -31,8 +34,8 @@
                     <q-icon name="archive" size="20px" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>
-                      Zip “{{ controller.name }}”
+                    <q-item-label class="unbreakable-label">
+                      Zip “{{ controller.name.trim() }}”
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -41,8 +44,18 @@
                     <q-icon name="folder_open" size="20px" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>
-                      Open “{{ controller.name }}” folder
+                    <q-item-label class="unbreakable-label">
+                      Browse the “{{ controller.name.trim() }}” folder
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple v-close-popup @click.native="setShowSettings(pkg, controller.name)">
+                  <q-item-section avatar style="min-width: auto;">
+                    <q-icon name="link_off" size="20px" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="unbreakable-label">
+                      Set file exclusions for “{{ controller.name.trim() }}”
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -59,6 +72,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const chokidar = require('chokidar')
+import checkFileExists from '../util/check-file-exists'
 // const archiver = require('archiver')
 import gridItemImage from '../components/gridItemImage'
 import { shell, ipcRenderer as ipc } from 'electron'
@@ -91,19 +105,45 @@ export default {
       fontSize: 12,
       delay: 200,
       timer: null,
-      watcher: null,
+      controllerWatcher: null,
+      exclusionsWatcher: null,
       controller: {
         versionNumber: 'v0.0.0',
         name: `¯\\_(ツ)_/¯`
       },
-      isLast: false
+      isLast: false,
+      exclusionPath: '',
+      exclusionTimestamp: ''
     }
   },
-
+  computed: {
+    hasCustomExclusions: {
+      // getter
+      get: function () {
+        // is this a folder?
+        if (this.pkg.data.isDir) {
+          const exclusionTimestamp = this.exclusionTimestamp
+          if (checkFileExists(this.exclusionPath)) {
+            return exclusionTimestamp
+          } else {
+            return false
+          }
+        }
+      },
+      // setter
+      set: function (timestamp) {
+        this.exclusionTimestamp = timestamp
+      }
+    }
+  },
   mounted: function () {
+    this.exclusionPath = this.pkg.nodeKey + path.sep + 'exclusions.json'
+    this.exclusionTimestamp = new Date().getTime()
+    this.exclusionsWatcherHandler(this.exclusionPath)
+
     const controller = this.pkg.nodeKey + path.sep + 'controller.php'
     this.setControllerData(controller)
-    this.rootWatcherHandler(controller)
+    this.controllerWatcherHandler(controller)
     if (this.$parent.$children[this.$parent.$children.length - 1] === this) {
       // when loading the last of gridItem,
       // emit this event to init "holmes"
@@ -170,26 +210,57 @@ export default {
         }
       })
     },
-    rootWatcherHandler: function (controller) {
+    controllerWatcherHandler: function (controller) {
       if (controller) {
-        this.watcher = chokidar.watch(controller, {
+        this.controllerWatcher = chokidar.watch(controller, {
           ignorePermissionErrors: true
         })
-        if (this.watcher) {
-          this.watcher.on('ready', () => { // initial scan done
+        if (this.controllerWatcher) {
+          this.controllerWatcher.on('ready', () => { // initial scan done
             // we only care if controller.php is added/modified/deleted
-            this.watcher
+            this.controllerWatcher
               .on('change', (path) => {
                 // if files are changed we only care if it is
                 // controller.php and only if inside a package
                 this.setControllerData(path)
               })
           })
-          this.watcher.on('error', (error) => { // initial scan done
+          this.controllerWatcher.on('error', (error) => { // initial scan done
             console.error(error)
           })
         }
       }
+    },
+    exclusionsWatcherHandler: function (exclusions) {
+      if (exclusions) {
+        this.exclusionsWatcher = chokidar.watch(exclusions, {
+          depth: 1,
+          ignorePermissionErrors: true
+        })
+        if (this.exclusionsWatcher) {
+          this.exclusionsWatcher.on('ready', () => { // initial scan done
+            this.exclusionsWatcher
+              .on('add', (path, stats) => {
+                // if files are added/renamed we only care if it is
+                // exclusions.json and only if inside a package
+                this.hasCustomExclusions = new Date().getTime()
+              })
+              .on('unlink', (path) => {
+                // if files are deleted we only care if it is
+                // exclusions.json and only if inside a package
+                this.hasCustomExclusions = new Date().getTime()
+              })
+          })
+          this.exclusionsWatcher.on('error', (error) => { // initial scan done
+            console.error(error)
+          })
+        }
+      }
+    },
+    setShowSettings: function (pkg, name) {
+      pkg.name = name
+      this.$root.$emit('show-package-settings', pkg)
+      // this.showSettings = true
     },
     compress: async function (pkgHandle) {
       // let pkgHandle = pkg.handle
@@ -215,7 +286,7 @@ export default {
         {
           start: true,
           done: false,
-          heading: 'Preparing building process. Please wait',
+          heading: 'Preparing build process. Please wait.',
           total: 1,
           processed: 0,
           goahead: async () => {
@@ -266,7 +337,8 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.watcher.close()
+    this.controllerWatcher.close()
+    this.exclusionsWatcher.close()
   }
 }
 </script>
@@ -276,6 +348,7 @@ export default {
   border: 1px solid #ececec;
   /* background-color: #fff; */
   word-wrap: break-word;
+  position: relative;
 }
 .pkg-card-wrapper:hover {
   cursor: pointer;
@@ -289,5 +362,19 @@ export default {
 .pkg-card .ver-num {
   font-style: italic;
   font-size: 75%;
+}
+.has-custom-exclusions {
+    position: absolute;
+    padding: 0 0.8em 0 0.8em;
+    font-size: 0.8em;
+    margin: 0;
+    top: 1px;
+    right: 1px;
+    z-index: 99;
+    line-height: 1.875em;
+    border-radius: 0 4px 0 4px!important;
+}
+.unbreakable-label{
+  white-space: nowrap!important;
 }
 </style>

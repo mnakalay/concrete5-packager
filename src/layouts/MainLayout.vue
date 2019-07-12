@@ -19,11 +19,11 @@
           dense
           round
           @click.native="openWorkFolder()"
-          aria-label="Click to open build & release folder"
+          aria-label="Click to browse your build & release folders"
         >
           <q-icon name="folder_open" />
-          <q-tooltip self="bottom right">
-            Open the Build & Release folder
+          <q-tooltip>
+            Browse your Build & Release folders
           </q-tooltip>
         </q-btn>
         <q-btn
@@ -31,11 +31,23 @@
           dense
           round
           @click="setShowSettings"
-          aria-label="Click to open settings screen"
+          aria-label="Click to open the settings screen"
         >
           <q-icon name="settings" />
           <q-tooltip>
             Settings
+          </q-tooltip>
+        </q-btn>
+        <q-btn
+          flat
+          dense
+          round
+          @click.native="openAboutWindow()"
+          aria-label="Click to display information about this app"
+        >
+          <q-icon name="details" />
+          <q-tooltip>
+            About this app
           </q-tooltip>
         </q-btn>
       </q-toolbar>
@@ -90,6 +102,7 @@
       <router-view v-if="!packages.length" />
     </q-page-container>
     <app-settings-dialog />
+    <package-settings-dialog />
   </q-layout>
 </template>
 
@@ -104,6 +117,7 @@ const chokidar = require('chokidar')
 import walkFolders from '../util/walkFolders'
 import rootList from '../components/rootList'
 import appSettingsDialog from '../components/appSettingsDialog'
+import packageSettingsDialog from '../components/packageSettingsDialog'
 import packageList from '../pages/package-list'
 import checkDirExists from '../util/check-dir-exists'
 import checkFileExists from '../util/check-file-exists'
@@ -117,7 +131,8 @@ export default {
     // Add a reference to the RootList component in the components property
     rootList,
     packageList,
-    appSettingsDialog
+    appSettingsDialog,
+    packageSettingsDialog
   },
   data () {
     return {
@@ -385,6 +400,9 @@ export default {
       defPath = defPath.join(path.sep)
       let workFolder = settingsStore.getAppSettings('workFolder', defPath)
       shell.openItem(workFolder)
+    },
+    openAboutWindow () {
+      ipc.send('show-about')
     }
   },
   created () {

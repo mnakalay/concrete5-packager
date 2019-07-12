@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import runBuildAndRelease from '../../src/util/create-archive'
+// import { openAboutWindow } from 'about-window'
+import { rootPath } from 'electron-root-path'
 
 const path = require('path')
 const http = require('http')
@@ -7,10 +9,12 @@ const express = require('express')
 const expressApp = express()
 const cors = require('cors')
 const router = express.Router()
-    /**
-     * Set `__statics` path to static files in production;
-     * The reason we are setting it here is that the path needs to be evaluated at runtime
-     */
+const openAboutWindow = require('about-window').default
+
+/**
+ * Set `__statics` path to static files in production;
+ * The reason we are setting it here is that the path needs to be evaluated at runtime
+ */
 if (process.env.PROD) {
     global.__statics = require('path').join(__dirname, 'statics').replace(/\\/g, '\\\\')
 }
@@ -57,8 +61,26 @@ ipcMain.on('root', (event, folder) => {
     fileFolder = folder
 })
 
+ipcMain.on('show-about', (event) => {
+    openAboutWindow({
+        icon_path: path.join(__statics, '/images/about-logo.min.svg'),
+        // copyright: 'Copyright (c) 2019 Nour Akalay',
+        bug_link_text: 'Report an issue',
+        use_version_info: true,
+        open_devtools: false,
+        package_json_dir: rootPath,
+        win_options: {
+            alwaysOnTop: true,
+            minimizable: false,
+            maximizable: false,
+            fullscreenable: false
+        }
+    })
+})
+
 expressApp.use(cors())
 
+// route to get a package folder
 router.get('/pkg/:handle', async function(req, res) {
     let folder = fileFolder + path.sep + 'packages' + path.sep
     try {
@@ -69,8 +91,15 @@ router.get('/pkg/:handle', async function(req, res) {
     }
 })
 
+// route to fetch and display package icon files
 router.get('/file/:handle', function(req, res) {
     let filename = fileFolder + path.sep + 'packages' + path.sep + req.params.handle + path.sep + 'icon.png'
+    res.sendFile(filename)
+})
+
+// route to fetch and display package exclusions.json files
+router.get('/exclusion/:handle', function(req, res) {
+    let filename = fileFolder + path.sep + 'packages' + path.sep + req.params.handle + path.sep + 'exclusions.json'
     res.sendFile(filename)
 })
 

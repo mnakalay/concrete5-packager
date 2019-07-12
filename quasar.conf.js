@@ -137,26 +137,38 @@ module.exports = function(ctx) {
             // id: 'org.cordova.quasar.app'
         },
         electron: {
-            // bundler: 'builder', // or 'packager'
+            bundler: 'packager', // or 'packager'
             extendWebpack(cfg) {
                 // do something with Electron process Webpack cfg
             },
             packager: {
                 // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
+                appCopyright: 'Copyright (c) 2019 Nour Akalay',
+                // arch: 'all',
+                asar: true,
+                executableName: 'Concrete5Packager',
+                // platform: 'win32, darwin', // linux, win32, darwin
+                appCategoryType: 'public.app-category.developer-tools',
+                // Window only
+                win32metadata: {
+                    CompanyName: 'Kalmoya.com',
+                    FileDescription: 'Clean & zip up Concrete5 Packages ready for production.'
+                }
                 // OS X / Mac App Store
                 // appBundleId: '',
                 // appCategoryType: '',
                 // osxSign: '',
                 // protocol: 'myapp://path',
 
-                // Window only
-                // win32metadata: { ... }
+
             },
             builder: {
                 // https://www.electron.build/configuration/configuration
 
-                // appId: 'quasar-app'
+                appId: 'com.electron.concrete5packager',
+                win: {
+                    target: 'nsis'
+                }
             }
         }
     }

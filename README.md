@@ -17,8 +17,11 @@ First intall the Quasar Framework from the command line (this installs it global
 Then install all dependencies using NPM from within the project folder
 > npm install
 
-Finally run the app with the following command
+Finally run the app in dev mode with the following command
 > quasar dev -m electron
+
+Or build the executable for your system with the following command
+> quasar build -m electron
 
 On Mac you might get an error message saying you also need to run the following command
 > npm install --save aws-sdk
@@ -49,13 +52,15 @@ So far the app has the following settings:
 - the destination folder
 - whether to delete the build folder after zipping up the package
 - whether to add missing `defined('C5_EXECUTE') or die("Access Denied.")`
-- custom exclusions (specific files and folders and file extensions)
-
+- custom app-wide exclusions of specific files and folders and file extensions
+- custom package exclusions of specific files and folders and file extensions
 
 ## To do
 - ~~Add a button to open the destination folder easily~~
 - ~~Add an option to exclude more files and folders~~
-- Add an option to exclude files and folders per package (maybe)
+- ~~Add an option to exclude files and folders per package~~
 - Add an option to run Composer on the package
-- Add an option to only check the package (not zip) and give a detailed report
+- Add an option to only check the package (no zipping) and give a detailed report
+- Add the possibility to push the release to a GIT repository
 - Add the possibility to upload it directly to the marketplace (possibly hacky)
+- Add proper icons for the app

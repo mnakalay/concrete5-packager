@@ -98,7 +98,7 @@ export default {
       if (data.close) {
         this.showProgress = false
       } else if (data.done) {
-        setTimeout(this.setProgress, 450, {heading: 'All done!', processed: 1, total: 1})
+        setTimeout(this.setProgress, 450, {heading: 'All Done!', processed: 1, total: 1})
         setTimeout(this.setProgress, 1500, {close: true, processed: 0, total: 1})
       } else {
         this.showProgress = true
