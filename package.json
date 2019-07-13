@@ -57,7 +57,7 @@
         "build-win32": "quasar build -m electron win32 -t mat -b builder"
     },
     "dependencies": {
-        "@quasar/app": "^1.0.0-rc.7",
+        "@quasar/app": "^1.0.4",
         "@quasar/extras": "^1.1.4",
         "about-window": "^1.13.0",
         "archiver": "^3.0.0",
@@ -70,7 +70,7 @@
         "fast-glob": "^2.2.6",
         "fs-extra": "^7.0.1",
         "holmes.js": "^1.17.3",
-        "quasar": "^1.0.0-rc.5",
+        "quasar": "^1.0.5",
         "replace-in-file": "^3.4.3",
         "shelljs": "^0.8.3",
         "tiny-glob": "^0.2.6",
