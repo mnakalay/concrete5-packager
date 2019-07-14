@@ -11,7 +11,7 @@ body {
     border: none;
     outline: none;
     overflow: hidden;
-    text-indent: -100px;
+    text-indent: -400px;
     cursor: pointer;
     background-color: #DDD;
     -webkit-transition: background-color 300ms linear;

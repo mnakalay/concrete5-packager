@@ -73,7 +73,7 @@ ipcMain.on('show-about', (event) => {
         show_close_button: false,
         package_json_dir: rootPath,
         adjust_window_size: true,
-        show_close_button: '&Cross;',
+        show_close_button: 'Close this window',
         css_path: path.join(__statics, '/css/about.css'),
         win_options: {
             alwaysOnTop: true,
