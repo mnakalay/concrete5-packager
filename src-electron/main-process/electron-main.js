@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import runBuildAndRelease from '../../src/util/create-archive'
 // import { openAboutWindow } from 'about-window'
 import { rootPath } from 'electron-root-path'
-
+// const rootPath = require('electron-root-path').rootPath
 const path = require('path')
 const http = require('http')
 const express = require('express')
@@ -46,6 +46,7 @@ function createWindow() {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
+    ipcMain.removeAllListeners(['root', 'show-about'])
     if (process.platform !== 'darwin') {
         app.quit()
     }
@@ -59,23 +60,31 @@ app.on('activate', () => {
 
 ipcMain.on('root', (event, folder) => {
     fileFolder = folder
+    event.returnValue = true
 })
 
 ipcMain.on('show-about', (event) => {
     openAboutWindow({
         icon_path: path.join(__statics, '/images/about-logo.min.svg'),
         // copyright: 'Copyright (c) 2019 Nour Akalay',
-        bug_link_text: 'Report an issue',
+        // bug_link_text: 'Report an issue',
         use_version_info: true,
         open_devtools: false,
+        show_close_button: false,
         package_json_dir: rootPath,
+        adjust_window_size: true,
+        show_close_button: '&Cross;',
+        css_path: path.join(__statics, '/css/about.css'),
         win_options: {
             alwaysOnTop: true,
             minimizable: false,
             maximizable: false,
-            fullscreenable: false
+            fullscreenable: false,
+            frame: false,
+            backgroundColor: '#fff'
         }
     })
+    event.returnValue = true
 })
 
 expressApp.use(cors())

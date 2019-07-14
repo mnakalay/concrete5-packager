@@ -105,7 +105,6 @@ export default {
   },
   methods: {
     onOk (data) {
-      console.log('on ok')
       var exclusions = {}
       if (!this.extensionExclusions || !this.extensionExclusions.length) {
         this.extensionExclusions = ''
@@ -176,7 +175,6 @@ export default {
     // this.fileFolderExclusions = settingsStore.getAppSettings('fileFolderExclusions', '')
 
     this.$root.$on('show-package-settings', (event) => {
-      console.log('launch')
       this.pkg = event
       this.exclusionsFile = this.pkg.nodeKey + path.sep + 'exclusions.json'
       let filesfolders = ''

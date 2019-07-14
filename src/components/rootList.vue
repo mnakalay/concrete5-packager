@@ -62,14 +62,10 @@ export default {
         ok: 'Yes, remove!',
         cancel: 'No'
       }).onOk(() => {
-        // let gRootList = JSON.parse(settings.getAppSettings('rootList')) || []
-        console.log('removing')
-        // let gRootList = settings.getAppSettings('rootList', [])
         let gRootList = JSON.parse(settings.getAppSettings('rootList')) || []
         const rootID = root.id
         gRootList.splice(rootID, 1)
         settings.setAppSettings(JSON.stringify(gRootList), 'rootList')
-        // settings.setAppSettings(gRootList, 'rootList')
 
         const rootIndex = this.roots.indexOf(root)
         this.roots.splice(rootIndex, 1)
